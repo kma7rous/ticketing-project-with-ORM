@@ -1,7 +1,7 @@
 package com.cydeo.entity;
 
 import com.cydeo.entity.common.UserPrincipal;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.security.core.Authentication;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -22,10 +22,10 @@ public class BaseEntityListener extends AuditingEntityListener {
 //        baseEntity.insertUserId = 1L;
 //        baseEntity.lastUpdateUserId = 1L;
 
-        if (authentication != null && !authentication.name().equals("anonymousUser")){
-            Object principal = authentication.getPricipal();
-            baseEntity.insertUserId = ((UserPrincipal) principal.getId());
-            baseEntity.lastUpdateUserId = ((UserPrincipal) principal.getId());
+        if (authentication != null && !authentication.getName().equals("anonymousUser")) {
+            Object principal = authentication.getPrincipal();
+            baseEntity.setInsertUserId(((UserPrincipal) principal).getId());
+            baseEntity.setLastUpdateUserId(((UserPrincipal) principal).getId());
         }
     }
 
@@ -37,9 +37,9 @@ public class BaseEntityListener extends AuditingEntityListener {
         baseEntity.lastUpdateDateTime = LocalDateTime.now();
 //        baseEntity.lastUpdateUserId = 1L;
 
-        if (authentication != null && !authentication.name().equals("anonymousUser")){
-            Object principal = authentication.getPricipal();
-            baseEntity.lastUpdateUserId = ((UserPrincipal) principal.getId());
+        if (authentication != null && !authentication.getName().equals("anonymousUser")) {
+            Object principal = authentication.getPrincipal();
+            baseEntity.setLastUpdateUserId(((UserPrincipal) principal).getId());
         }
     }
 
